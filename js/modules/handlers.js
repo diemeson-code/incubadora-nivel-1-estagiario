@@ -3,74 +3,74 @@
 // ========================================
 
 function renderFeaturedProducts() {
-	const container = document.getElementById("featuredProducts");
-	if (!container) return;
+  const container = document.getElementById("featuredProducts");
+  if (!container) return;
 
-	const featured = getFeaturedProducts();
-	if (featured.length === 0) {
-		container.innerHTML =
-			'<p class="text-center">Nenhum produto em destaque.</p>';
-		return;
-	}
+  const featured = getFeaturedProducts();
+  if (featured.length === 0) {
+    container.innerHTML =
+      '<p class="text-center">Nenhum produto em destaque.</p>';
+    return;
+  }
 
-	container.innerHTML = featured.map((p) => createProductCard(p)).join("");
-	initFavoriteButtons();
+  container.innerHTML = featured.map((p) => createProductCard(p)).join("");
+  initFavoriteButtons();
 }
 
 function initCartHandlers() {
-	const cartBtn = document.querySelector("[data-cart-btn]");
-	if (cartBtn) {
-		cartBtn.addEventListener("click", (e) => {
-			e.preventDefault();
-			window.modalSystem.info({
-				title: "Carrinho de Compras",
-				content:
-					'<p class="modal__text">Seu carrinho está vazio.<br>Adicione produtos para começar!</p>',
-				actions: [
-					{
-						label: "Continuar Comprando",
-						variant: "primary",
-						onClick: () => (window.location.href = "products.html"),
-					},
-				],
-			});
-		});
-	}
+  const cartBtn = document.querySelector("[data-cart-btn]");
+  if (cartBtn) {
+    cartBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.modalSystem.info({
+        title: "Carrinho de Compras",
+        content:
+          '<p class="modal__text">Seu carrinho está vazio.<br>Adicione produtos para começar!</p>',
+        actions: [
+          {
+            label: "Continuar Comprando",
+            variant: "primary",
+            onClick: () => (window.location.href = "products.html"),
+          },
+        ],
+      });
+    });
+  }
 
-	document.addEventListener("click", (e) => {
-		if (e.target.closest("[data-add-cart]")) {
-			e.preventDefault();
-			const btn = e.target.closest("[data-add-cart]");
-			const productName = btn.dataset.productName;
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-add-cart]")) {
+      e.preventDefault();
+      const btn = e.target.closest("[data-add-cart]");
+      const productName = btn.dataset.productName;
 
-			btn.disabled = true;
-			const originalText = btn.innerHTML;
-			btn.innerHTML = "Adicionado!";
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "Adicionado!";
 
-			setTimeout(() => {
-				btn.disabled = false;
-				btn.innerHTML = originalText;
-			}, 1500);
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }, 1500);
 
-			window.modalSystem.success({
-				title: "Produto Adicionado!",
-				content: `<p class="modal__text"><strong>${productName || "Produto"}</strong> foi adicionado ao carrinho!</p>`,
-				actions: [
-					{ label: "Continuar Comprando", variant: "ghost", onClick: () => {} },
-					{ label: "Ver Carrinho", variant: "primary", onClick: () => {} },
-				],
-			});
-		}
-	});
+      window.modalSystem.success({
+        title: "Produto Adicionado!",
+        content: `<p class="modal__text"><strong>${productName || "Produto"}</strong> foi adicionado ao carrinho!</p>`,
+        actions: [
+          { label: "Continuar Comprando", variant: "ghost", onClick: () => {} },
+          { label: "Ver Carrinho", variant: "primary", onClick: () => {} },
+        ],
+      });
+    }
+  });
 }
 
 function initLoginHandler() {
-	const loginBtn = document.querySelector("[data-login-btn]");
-	if (!loginBtn) return;
+  const loginBtn = document.querySelector("[data-login-btn]");
+  if (!loginBtn) return;
 
-	loginBtn.addEventListener("click", (e) => {
-		e.preventDefault();
-		const loginForm = `
+  loginBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const loginForm = `
       <form class="form" id="loginForm">
         <div class="form__group">
           <label class="form__label form__label--required" for="email">E-mail</label>
@@ -89,34 +89,34 @@ function initLoginHandler() {
       </form>
     `;
 
-		window.modalSystem.create({
-			title: "Login",
-			content: loginForm,
-			actions: [
-				{ label: "Cancelar", variant: "ghost", onClick: () => {} },
-				{
-					label: "Entrar",
-					variant: "primary",
-					onClick: () => {
-						const form = document.getElementById("loginForm");
-						const validator = new FormValidator(form);
-						if (validator.validateAll()) {
-							window.modalSystem.success({
-								title: "Login realizado!",
-								content: '<p class="modal__text">Bem-vindo de volta!</p>',
-								actions: [
-									{ label: "OK", variant: "primary", onClick: () => {} },
-								],
-							});
-						}
-					},
-				},
-			],
-		});
+    window.modalSystem.create({
+      title: "Login",
+      content: loginForm,
+      actions: [
+        { label: "Cancelar", variant: "ghost", onClick: () => {} },
+        {
+          label: "Entrar",
+          variant: "primary",
+          onClick: () => {
+            const form = document.getElementById("loginForm");
+            const validator = new FormValidator(form);
+            if (validator.validateAll()) {
+              window.modalSystem.success({
+                title: "Login realizado!",
+                content: '<p class="modal__text">Bem-vindo de volta!</p>',
+                actions: [
+                  { label: "OK", variant: "primary", onClick: () => {} },
+                ],
+              });
+            }
+          },
+        },
+      ],
+    });
 
-		setTimeout(() => {
-			const form = document.getElementById("loginForm");
-			if (form) new FormValidator(form);
-		}, 100);
-	});
+    setTimeout(() => {
+      const form = document.getElementById("loginForm");
+      if (form) new FormValidator(form);
+    }, 100);
+  });
 }
